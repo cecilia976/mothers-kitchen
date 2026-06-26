@@ -1,0 +1,217 @@
+/* ============================================
+   Food Card — Mother's Kitchen
+   ============================================ */
+
+.food-section {
+  margin-bottom: var(--space-8);
+  animation: fadeInUp 0.5s ease 0.3s both;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-5);
+}
+
+.food-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--color-border-light);
+  transition: all var(--transition-base);
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: transparent;
+}
+
+.food-card-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+.food-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.food-card:hover .food-card-image {
+  transform: scale(1.08);
+}
+
+.food-card-badges {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  display: flex;
+  gap: var(--space-1);
+}
+
+.food-card-badge {
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.food-card-badge.popular {
+  background: var(--color-primary);
+  color: white;
+}
+
+.food-card-badge.new {
+  background: var(--color-success);
+  color: white;
+}
+
+.food-card-badge.discount {
+  background: var(--color-error);
+  color: white;
+}
+
+.food-card-add-btn {
+  position: absolute;
+  bottom: var(--space-3);
+  right: var(--space-3);
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: var(--shadow-warm);
+  transition: all var(--transition-fast);
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.food-card:hover .food-card-add-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.food-card-add-btn:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.1) !important;
+}
+
+.food-card-body {
+  padding: var(--space-4) var(--space-4) var(--space-5);
+}
+
+.food-card-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.food-card-description {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: var(--leading-relaxed);
+}
+
+.food-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.food-card-price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.food-card-price-current {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.food-card-price-original {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.food-card-rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.food-card-rating-icon {
+  font-size: 0.85rem;
+}
+
+.food-card-add-btn-mobile {
+  display: none;
+  width: 100%;
+  padding: var(--space-3);
+  margin-top: var(--space-3);
+  background: var(--color-primary);
+  color: white;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  transition: background var(--transition-fast);
+}
+.food-card-add-btn-mobile:hover {
+  background: var(--color-primary-dark);
+}
+
+@media (max-width: 768px) {
+  .food-card-add-btn {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .food-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+  .food-card-image-wrap {
+    height: 140px;
+  }
+  .food-card-body {
+    padding: var(--space-3);
+  }
+  .food-card-description {
+    display: none;
+  }
+  .food-card-name {
+    font-size: var(--text-sm);
+  }
+  .food-card-price-current {
+    font-size: var(--text-base);
+  }
+}
