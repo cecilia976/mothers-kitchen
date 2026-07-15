@@ -1,0 +1,145 @@
+/* ============================================
+   Menu Page — Mother's Kitchen
+   ============================================ */
+
+.menu-page {
+  animation: fadeIn 0.4s ease;
+}
+
+.menu-header {
+  margin-bottom: var(--space-6);
+}
+
+.menu-tabs {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-4);
+}
+
+.menu-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.menu-tab:hover {
+  background: var(--color-bg-warm);
+  color: var(--color-primary);
+}
+
+.menu-tab.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.menu-toolbar {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.menu-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.menu-search {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--space-4) 0 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+}
+.menu-search:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+}
+
+.menu-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+}
+
+.menu-sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 48px;
+  padding: 0 var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  color: var(--color-text-secondary);
+}
+
+.menu-sort select {
+  border: none;
+  background: none;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.menu-categories-pills {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  scrollbar-width: none;
+}
+.menu-categories-pills::-webkit-scrollbar { display: none; }
+
+.menu-category-pill {
+  white-space: nowrap;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.menu-category-pill:hover {
+  background: var(--color-bg-warm);
+  color: var(--color-primary);
+}
+
+.menu-category-pill.active {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .menu-tabs {
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}

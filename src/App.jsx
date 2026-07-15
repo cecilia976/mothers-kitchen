@@ -7,13 +7,14 @@ import BottomNav from './components/BottomNav/BottomNav';
 import ToastContainer from './components/Toast/Toast';
 
 import Home from './pages/Home/Home';
-import Restaurants from './pages/Restaurants/Restaurants';
-import RestaurantDetail from './pages/RestaurantDetail/RestaurantDetail';
+import Menu from './pages/Menu/Menu';
+import ItemDetail from './pages/ItemDetail/ItemDetail';
 import Checkout from './pages/Checkout/Checkout';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Profile from './pages/Profile/Profile';
 import Search from './pages/Search/Search';
+import Favorites from './pages/Favorites/Favorites';
 
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -42,14 +43,14 @@ function App() {
               <div className="container-fluid">
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/restaurants" element={<Restaurants />} />
-                  <Route path="/restaurant/:id" element={<RestaurantDetail />} />
+                  <Route path="/menu" element={<Menu />} />
+                  <Route path="/food/:id" element={<ItemDetail type="food" />} />
+                  <Route path="/drink/:id" element={<ItemDetail type="drink" />} />
                   <Route path="/checkout" element={<Checkout />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/search" element={<Search />} />
-                  <Route path="/favorites" element={<div className="container"><h2>Favorites</h2><p>Coming Soon...</p></div>} />
-                  <Route path="/orders" element={<div className="container"><h2>Orders</h2><p>Coming Soon...</p></div>} />
-                  <Route path="/categories" element={<div className="container"><h2>Categories</h2><p>Coming Soon...</p></div>} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/orders" element={<Profile initialTab="orders" />} />
                 </Routes>
               </div>
             </main>
@@ -87,11 +88,11 @@ function App() {
         .content-area {
           flex: 1;
           padding: var(--space-8);
-          padding-bottom: 100px; /* Space for bottom nav on mobile */
+          padding-bottom: 100px;
         }
 
         .container-fluid {
-          max-width: 1200px;
+          max-width: var(--max-width);
           margin: 0 auto;
           width: 100%;
         }

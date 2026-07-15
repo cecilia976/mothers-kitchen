@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import { addresses } from '../../data/mockData';
-import { HiOutlineMapPin, HiOutlineCreditCard, HiOutlineCheckCircle } from 'react-icons/hi2';
+import { MapPin, CreditCard, CheckCircle, Info, ShoppingCart, Rocket, Smartphone, Banknote } from 'lucide-react';
 import './Checkout.css';
 
 export default function Checkout() {
@@ -20,14 +20,23 @@ export default function Checkout() {
     setTimeout(() => cart.clearCart(), 500);
   };
 
+  const getPaymentIcon = (id) => {
+    switch (id) {
+      case 'card': return <CreditCard size={24} />;
+      case 'cash': return <Banknote size={24} />;
+      case 'wallet': return <Smartphone size={24} />;
+      default: return <CreditCard size={24} />;
+    }
+  };
+
   if (cart.items.length === 0 && step !== 3) {
     return (
       <div className="checkout-page animate-fade-in">
         <div className="empty-state">
-          <span className="empty-state-icon">🛒</span>
+          <ShoppingCart size={48} className="empty-state-icon" />
           <h3>Your cart is empty</h3>
           <p>Add some items before checking out</p>
-          <button className="btn-primary" onClick={() => navigate('/')} style={{ marginTop: 20 }}>Browse Menu</button>
+          <button className="btn-primary" onClick={() => navigate('/menu')} style={{ marginTop: 20 }}>Browse Menu</button>
         </div>
       </div>
     );
@@ -49,7 +58,7 @@ export default function Checkout() {
 
       {step === 1 && (
         <div className="checkout-section animate-fade-in-up">
-          <h2 className="checkout-section-title"><HiOutlineMapPin /> Delivery Address</h2>
+          <h2 className="checkout-section-title"><MapPin size={24} className="text-primary" /> Delivery Address</h2>
           <div className="address-list">
             {addresses.map(addr => (
               <label key={addr.id} className={`address-option ${selectedAddress === addr.id ? 'selected' : ''}`}>
@@ -61,7 +70,7 @@ export default function Checkout() {
                   onChange={() => setSelectedAddress(addr.id)}
                 />
                 <div className="address-option-content">
-                  <div className="address-option-icon">{addr.icon}</div>
+                  <div className="address-option-icon"><MapPin size={20} /></div>
                   <div>
                     <div className="address-option-label">{addr.label}</div>
                     <div className="address-option-text">{addr.address}</div>
@@ -70,23 +79,23 @@ export default function Checkout() {
               </label>
             ))}
           </div>
-          <button className="btn-primary" onClick={() => setStep(2)} style={{ marginTop: 24 }}>Continue to Payment</button>
+          <button className="btn-primary" onClick={() => setStep(2)} style={{ marginTop: 24, width: '100%' }}>Continue to Payment</button>
         </div>
       )}
 
       {step === 2 && (
         <div className="checkout-section animate-fade-in-up">
-          <h2 className="checkout-section-title"><HiOutlineCreditCard /> Payment Method</h2>
+          <h2 className="checkout-section-title"><CreditCard size={24} className="text-primary" /> Payment Method</h2>
           <div className="payment-methods">
             {[
-              { id: 'card', label: 'Credit Card', icon: '💳', sub: '**** 4242' },
-              { id: 'cash', label: 'Cash on Delivery', icon: '💵', sub: 'Pay when delivered' },
-              { id: 'wallet', label: 'Digital Wallet', icon: '📱', sub: 'Apple Pay / Google Pay' },
+              { id: 'card', label: 'Credit Card', sub: '**** 4242' },
+              { id: 'cash', label: 'Cash on Delivery', sub: 'Pay when delivered' },
+              { id: 'wallet', label: 'Digital Wallet', sub: 'Apple Pay / Google Pay' },
             ].map(pm => (
               <label key={pm.id} className={`payment-option ${paymentMethod === pm.id ? 'selected' : ''}`}>
                 <input type="radio" name="payment" value={pm.id} checked={paymentMethod === pm.id} onChange={() => setPaymentMethod(pm.id)} />
                 <div className="payment-option-content">
-                  <span className="payment-option-icon">{pm.icon}</span>
+                  <span className="payment-option-icon">{getPaymentIcon(pm.id)}</span>
                   <div>
                     <div className="payment-option-label">{pm.label}</div>
                     <div className="payment-option-sub">{pm.sub}</div>
@@ -111,20 +120,20 @@ export default function Checkout() {
           </div>
 
           <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-            <button className="btn-outline" onClick={() => setStep(1)}>Back</button>
-            <button className="btn-primary" onClick={handlePlaceOrder}>Place Order · ${cart.total.toFixed(2)}</button>
+            <button className="btn-outline" onClick={() => setStep(1)} style={{ flex: 1 }}>Back</button>
+            <button className="btn-primary" onClick={handlePlaceOrder} style={{ flex: 2 }}>Place Order · ${cart.total.toFixed(2)}</button>
           </div>
         </div>
       )}
 
       {step === 3 && (
         <div className="checkout-confirmation animate-scale-in">
-          <div className="confirmation-icon"><HiOutlineCheckCircle /></div>
-          <h2>Order Confirmed! 🎉</h2>
-          <p>Your order has been placed successfully and is being prepared.</p>
+          <div className="confirmation-icon"><CheckCircle size={64} color="var(--color-success)" /></div>
+          <h2>Order Confirmed!</h2>
+          <p>Your order has been placed successfully and is being prepared with love.</p>
           <div className="confirmation-order-id">Order #MK-{Date.now().toString().slice(-6)}</div>
           <div className="confirmation-eta">
-            <span>🚀</span> Estimated delivery: <strong>25-35 minutes</strong>
+             <Rocket size={16} /> Estimated delivery: <strong>25-35 minutes</strong>
           </div>
           <button className="btn-primary" onClick={() => navigate('/')} style={{ marginTop: 24 }}>Back to Home</button>
         </div>

@@ -4,9 +4,8 @@ import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import { coupons } from '../../data/mockData';
 import {
-  HiOutlineShoppingBag, HiOutlineXMark, HiPlus,
-  HiMinus, HiOutlineTrash, HiOutlineClock, HiOutlineTicket
-} from 'react-icons/hi2';
+  ShoppingBag, X, Plus, Minus, Trash2, Clock, Ticket
+} from 'lucide-react';
 import './CartPanel.css';
 
 export default function CartPanel({ isOpen, onClose }) {
@@ -16,7 +15,7 @@ export default function CartPanel({ isOpen, onClose }) {
   const [couponCode, setCouponCode] = useState('');
 
   const handleApplyCoupon = () => {
-    const found = coupons.find(c => c.code.toLowerCase() === couponCode.toLowerCase());
+    const found = coupons.find(c => c.code.toLowerCase() === couponCode.trim().toLowerCase());
     if (!found) {
       toast.error('Invalid coupon code.');
       return;
@@ -53,16 +52,16 @@ export default function CartPanel({ isOpen, onClose }) {
             {cart.itemCount > 0 && <span className="cart-panel-count">{cart.itemCount}</span>}
           </h2>
           <button className="cart-panel-close" onClick={onClose} aria-label="Close cart">
-            <HiOutlineXMark />
+            <X size={20} />
           </button>
         </div>
 
         {cart.items.length === 0 ? (
           <div className="cart-panel-items">
             <div className="cart-panel-empty">
-              <div className="cart-panel-empty-icon">🛒</div>
+              <ShoppingBag size={48} className="cart-panel-empty-icon" />
               <div className="cart-panel-empty-title">Your cart is empty</div>
-              <div className="cart-panel-empty-text">Add items from restaurants to get started</div>
+              <div className="cart-panel-empty-text">Add some delicious meals to get started!</div>
             </div>
           </div>
         ) : (
@@ -80,7 +79,7 @@ export default function CartPanel({ isOpen, onClose }) {
                         onClick={() => cart.decrement(item.id)}
                         aria-label="Decrease quantity"
                       >
-                        <HiMinus />
+                        <Minus size={14} />
                       </button>
                       <span className="cart-item-qty">{item.quantity}</span>
                       <button
@@ -88,7 +87,7 @@ export default function CartPanel({ isOpen, onClose }) {
                         onClick={() => cart.increment(item.id)}
                         aria-label="Increase quantity"
                       >
-                        <HiPlus />
+                        <Plus size={14} />
                       </button>
                     </div>
                   </div>
@@ -97,7 +96,7 @@ export default function CartPanel({ isOpen, onClose }) {
                     onClick={() => { cart.removeItem(item.id); toast.info('Item removed'); }}
                     aria-label={`Remove ${item.name}`}
                   >
-                    <HiOutlineTrash />
+                    <Trash2 size={18} />
                   </button>
                 </div>
               ))}
@@ -111,7 +110,7 @@ export default function CartPanel({ isOpen, onClose }) {
                 </div>
               ) : (
                 <div className="cart-progress-text">
-                  🎉 You've unlocked <span>free delivery!</span>
+                  You've unlocked <span>free delivery!</span>
                 </div>
               )}
               <div className="cart-progress-bar">
@@ -123,7 +122,9 @@ export default function CartPanel({ isOpen, onClose }) {
             <div className="cart-coupon">
               {cart.coupon ? (
                 <div className="cart-coupon-applied">
-                  <span><HiOutlineTicket style={{ marginRight: 4 }} />{cart.coupon.code} applied</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Ticket size={16} />{cart.coupon.code} applied
+                  </span>
                   <button onClick={cart.removeCoupon} style={{ color: 'var(--color-error)', fontSize: '12px', fontWeight: 600 }}>
                     Remove
                   </button>
@@ -154,7 +155,7 @@ export default function CartPanel({ isOpen, onClose }) {
                 <span>{cart.deliveryFee === 0 ? 'Free' : `$${cart.deliveryFee.toFixed(2)}`}</span>
               </div>
               <div className="cart-summary-row">
-                <span>Platform Fee</span>
+                <span>Taxes & Fees</span>
                 <span>${cart.tax.toFixed(2)}</span>
               </div>
               {cart.discount > 0 && (
@@ -164,14 +165,9 @@ export default function CartPanel({ isOpen, onClose }) {
                 </div>
               )}
               <div className="cart-summary-row total">
-                <span>Total</span>
+                <span>Grand Total</span>
                 <span>${cart.total.toFixed(2)}</span>
               </div>
-              {cart.discount > 0 && (
-                <div className="cart-summary-savings">
-                  ✅ You saved ${cart.discount.toFixed(2)} on this order!
-                </div>
-              )}
             </div>
 
             {/* Checkout */}
@@ -185,12 +181,9 @@ export default function CartPanel({ isOpen, onClose }) {
                 Checkout · ${cart.total.toFixed(2)}
               </button>
               <button className="cart-schedule">
-                <HiOutlineClock style={{ marginRight: 4 }} />
+                <Clock size={16} style={{ marginRight: 8 }} />
                 Schedule order
               </button>
-              <div className="cart-delivery-note">
-                🚀 Delivery in 25–35 min
-              </div>
             </div>
           </>
         )}
@@ -204,7 +197,7 @@ export default function CartPanel({ isOpen, onClose }) {
           aria-label="Open cart"
           style={{ display: isOpen ? 'none' : undefined }}
         >
-          <HiOutlineShoppingBag />
+          <ShoppingBag size={24} />
           <span className="cart-float-btn-badge">{cart.itemCount}</span>
         </button>
       )}

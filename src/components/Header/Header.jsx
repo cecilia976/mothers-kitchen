@@ -2,10 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
-import {
-  HiOutlineMagnifyingGlass, HiOutlineBell, HiOutlineShoppingBag,
-  HiOutlineBars3, HiOutlineMapPin, HiOutlineChevronDown
-} from 'react-icons/hi2';
+import { Search, Bell, ShoppingBag, Menu, MapPin, ChevronDown } from 'lucide-react';
 import './Header.css';
 
 export default function Header({ onMenuToggle, onCartToggle }) {
@@ -34,37 +31,37 @@ export default function Header({ onMenuToggle, onCartToggle }) {
           onClick={onMenuToggle}
           aria-label="Toggle menu"
         >
-          <HiOutlineBars3 />
+          <Menu size={24} />
         </button>
 
         <div className="header-location" tabIndex={0} role="button" aria-label="Change delivery location">
-          <HiOutlineMapPin className="header-location-icon" />
+          <MapPin size={20} className="header-location-icon" />
           <div>
             <div className="header-location-label">Deliver to</div>
             <div className="header-location-value">
               218 Baker Street, London
-              <HiOutlineChevronDown className="header-location-chevron" />
+              <ChevronDown size={14} className="header-location-chevron" />
             </div>
           </div>
         </div>
       </div>
 
       <form className="header-search" onSubmit={handleSearch} role="search">
-        <HiOutlineMagnifyingGlass className="header-search-icon" />
+        <Search size={18} className="header-search-icon" />
         <input
           type="search"
           className="header-search-input"
-          placeholder="Search for restaurants or cuisines..."
+          placeholder="Search for delicious food & drinks..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          aria-label="Search for food or restaurants"
+          aria-label="Search for food"
           id="header-search"
         />
       </form>
 
       <div className="header-right">
         <button className="header-icon-btn desktop-only" aria-label="Notifications">
-          <HiOutlineBell />
+          <Bell size={20} />
           <span className="header-badge">3</span>
         </button>
 
@@ -73,7 +70,7 @@ export default function Header({ onMenuToggle, onCartToggle }) {
           onClick={onCartToggle}
           aria-label={`Shopping cart with ${itemCount} items`}
         >
-          <HiOutlineShoppingBag />
+          <ShoppingBag size={20} />
           {itemCount > 0 && <span className="header-badge">{itemCount}</span>}
         </button>
 
