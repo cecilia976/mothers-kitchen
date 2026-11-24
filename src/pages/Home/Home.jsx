@@ -4,7 +4,7 @@ import HeroBanner from '../../components/HeroBanner/HeroBanner';
 import CategorySlider from '../../components/CategorySlider/CategorySlider';
 import FoodCard from '../../components/FoodCard/FoodCard';
 import { foodItems, drinkItems, todaysSpecials, customerReviews } from '../../data/mockData';
-import { Truck, Clock, Star, MapPin, ArrowRight, Quote } from 'lucide-react';
+import { Star, ArrowRight, Quote, MessageCircle } from 'lucide-react';
 import './Home.css';
 
 export default function Home() {
@@ -22,38 +22,6 @@ export default function Home() {
   return (
     <div className="home-page">
       <HeroBanner />
-
-      {/* Quick Info Bar */}
-      <div className="info-bar animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-        <div className="info-card">
-          <div className="info-icon bg-orange"><Clock size={24} /></div>
-          <div>
-            <div className="info-value">Open 8am - 10pm</div>
-            <div className="info-label">Everyday access</div>
-          </div>
-        </div>
-        <div className="info-card">
-          <div className="info-icon bg-green"><Truck size={24} /></div>
-          <div>
-            <div className="info-value">Free Delivery</div>
-            <div className="info-label">On orders over $25</div>
-          </div>
-        </div>
-        <div className="info-card">
-          <div className="info-icon bg-blue"><MapPin size={24} /></div>
-          <div>
-            <div className="info-value">Central London</div>
-            <div className="info-label">Delivery within 3 miles</div>
-          </div>
-        </div>
-        <div className="info-card">
-          <div className="info-icon bg-purple"><Star size={24} /></div>
-          <div>
-            <div className="info-value">4.8★ Avg Rating</div>
-            <div className="info-label">Based on 2k+ reviews</div>
-          </div>
-        </div>
-      </div>
 
       {/* Special Offers Section */}
       {specialItems.length > 0 && (
@@ -135,8 +103,44 @@ export default function Home() {
         />
       </div>
 
+      <section className="about-section" id="about">
+        <div>
+          <span className="about-eyebrow">About Mother's Kitchen</span>
+          <h2>Comfort food, made with care</h2>
+        </div>
+        <p>
+          Mother's Kitchen brings comforting, home-style meals together in one menu:
+          familiar breakfasts, hearty main meals, burgers, pizza, African cuisine,
+          desserts, and refreshing drinks. Every order is prepared to feel warm,
+          welcoming, and familiar.
+        </p>
+      </section>
+
+      <section className="ordering-section" id="how-it-works">
+        <div className="section-header">
+          <div>
+            <h2 className="section-title">How ordering works</h2>
+            <p className="section-subtitle">A simple path from menu to WhatsApp</p>
+          </div>
+        </div>
+        <div className="ordering-grid">
+          {[
+            ['1', 'Explore the menu', 'Browse meals and drinks, then open any item for details.'],
+            ['2', 'Build your cart', 'Add favourites and adjust quantities as you go.'],
+            ['3', 'Share delivery details', 'Enter your name and delivery location at checkout.'],
+            ['4', 'Continue to WhatsApp', 'Press Send in WhatsApp to start your order conversation.'],
+          ].map(([number, title, text]) => (
+            <div className="ordering-card" key={number}>
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Reviews Section */}
-      <section className="reviews-section">
+      <section className="reviews-section" id="reviews">
         <h2 className="section-title text-center" style={{ marginBottom: 'var(--space-6)' }}>
           What our customers say
         </h2>
@@ -162,20 +166,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="newsletter-section">
-        <div className="newsletter-content">
-          <h2>Join the Mother's Kitchen Family</h2>
-          <p>Subscribe to our newsletter to receive weekly specials and a 15% discount on your next order.</p>
-          <form className="newsletter-form" onClick={e => e.preventDefault()}>
-            <input type="email" placeholder="Enter your email address" aria-label="Email for newsletter" required />
-            <button type="submit" className="btn-primary">Subscribe</button>
-          </form>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="footer-section">
+      <footer className="footer-section" id="contact">
         <div className="footer-grid">
           <div className="footer-brand">
             <img src="/logo.png" alt="Mother's Kitchen" className="footer-logo" />
@@ -185,20 +177,21 @@ export default function Home() {
           <div className="footer-links">
             <h4>Quick Links</h4>
             <a href="/menu">Our Menu</a>
-            <a href="/about">About Us</a>
-            <a href="/contact">Contact</a>
-          </div>
-          <div className="footer-links">
-            <h4>Legal</h4>
-            <a href="/terms">Terms of Service</a>
-            <a href="/privacy">Privacy Policy</a>
-            <a href="/refunds">Refund Policy</a>
+            <a href="/#about">About Us</a>
+            <a href="/#reviews">Reviews</a>
+            <a href="/#contact">Contact</a>
           </div>
           <div className="footer-contact">
             <h4>Contact Us</h4>
-            <p>218 Baker Street, London</p>
-            <p>hello@motherskitchen.com</p>
-            <p>+44 20 7123 4567</p>
+            <p>WhatsApp: 0794541304</p>
+            <a
+              className="footer-whatsapp"
+              href="https://wa.me/254794541304"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageCircle size={18} /> Continue on WhatsApp
+            </a>
           </div>
         </div>
         <div className="footer-bottom">

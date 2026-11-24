@@ -1,16 +1,13 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
-import { Star, Plus, Heart } from 'lucide-react';
+import { Star, Plus } from 'lucide-react';
 import './FoodCard.css';
 
 export default function FoodCard({ food, type = 'food' }) {
   const { addItem } = useCart();
   const toast = useToast();
   const navigate = useNavigate();
-  const [isFavorited, setIsFavorited] = useState(false);
-
   const handleAdd = (e) => {
     e.stopPropagation();
     addItem({
@@ -23,12 +20,6 @@ export default function FoodCard({ food, type = 'food' }) {
     toast.success(`${food.name} added to cart!`);
   };
 
-  const handleFavorite = (e) => {
-    e.stopPropagation();
-    setIsFavorited(!isFavorited);
-    toast.info(isFavorited ? 'Removed from favorites' : 'Added to favorites');
-  };
-
   const handleClick = () => {
     navigate(`/${type}/${food.id}`);
   };
@@ -37,18 +28,11 @@ export default function FoodCard({ food, type = 'food' }) {
     <article className="food-card" onClick={handleClick} tabIndex={0} aria-label={`View ${food.name}`}>
       <div className="food-card-image-wrap">
         <img
-          src={food.image}
+          src={food.image || '/logo.png'}
           alt={food.name}
           className="food-card-image"
           loading="lazy"
         />
-        <button
-          className={`food-card-favorite ${isFavorited ? 'active' : ''}`}
-          onClick={handleFavorite}
-          aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
-        >
-          <Heart size={20} fill={isFavorited ? 'currentColor' : 'none'} color={isFavorited ? 'var(--color-primary)' : 'currentColor'} />
-        </button>
         <div className="food-card-badges">
           {food.isPopular && <span className="food-card-badge popular">Popular</span>}
           {food.isNew && <span className="food-card-badge new">New</span>}

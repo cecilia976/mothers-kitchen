@@ -1,20 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
-import { Search, Bell, ShoppingBag, Menu, MapPin, ChevronDown } from 'lucide-react';
+import { Search, ShoppingBag } from 'lucide-react';
 import './Header.css';
 
-export default function Header({ onMenuToggle, onCartToggle }) {
+export default function Header({ onCartToggle }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const { user, isAuthenticated } = useAuth();
   const { itemCount } = useCart();
   const navigate = useNavigate();
-
-  const getInitials = (name) => {
-    if (!name) return 'G';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -25,26 +18,18 @@ export default function Header({ onMenuToggle, onCartToggle }) {
 
   return (
     <header className="header" role="banner">
-      <div className="header-left">
-        <button
-          className="header-menu-btn"
-          onClick={onMenuToggle}
-          aria-label="Toggle menu"
-        >
-          <Menu size={24} />
-        </button>
+      <button className="header-brand" onClick={() => navigate('/')} aria-label="Mother's Kitchen home">
+        <img src="/logo.png" alt="" className="header-brand-logo" />
+        <span>Mother's Kitchen</span>
+      </button>
 
-        <div className="header-location" tabIndex={0} role="button" aria-label="Change delivery location">
-          <MapPin size={20} className="header-location-icon" />
-          <div>
-            <div className="header-location-label">Deliver to</div>
-            <div className="header-location-value">
-              218 Baker Street, London
-              <ChevronDown size={14} className="header-location-chevron" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <nav className="header-nav" aria-label="Customer navigation">
+        <button onClick={() => navigate('/')}>Home</button>
+        <button onClick={() => navigate('/menu')}>Menu</button>
+        <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>About Us</button>
+        <button onClick={() => document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' })}>Reviews</button>
+        <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Contact</button>
+      </nav>
 
       <form className="header-search" onSubmit={handleSearch} role="search">
         <Search size={18} className="header-search-icon" />
@@ -60,13 +45,8 @@ export default function Header({ onMenuToggle, onCartToggle }) {
       </form>
 
       <div className="header-right">
-        <button className="header-icon-btn desktop-only" aria-label="Notifications">
-          <Bell size={20} />
-          <span className="header-badge">3</span>
-        </button>
-
         <button
-          className="header-icon-btn header-cart-btn-mobile"
+          className="header-icon-btn"
           onClick={onCartToggle}
           aria-label={`Shopping cart with ${itemCount} items`}
         >
@@ -74,15 +54,6 @@ export default function Header({ onMenuToggle, onCartToggle }) {
           {itemCount > 0 && <span className="header-badge">{itemCount}</span>}
         </button>
 
-        <div
-          className="header-avatar"
-          onClick={() => navigate(isAuthenticated ? '/profile' : '/login')}
-          role="button"
-          tabIndex={0}
-          aria-label={isAuthenticated ? 'Go to profile' : 'Sign in'}
-        >
-          {isAuthenticated ? getInitials(user?.name) : 'G'}
-        </div>
       </div>
     </header>
   );

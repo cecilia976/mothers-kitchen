@@ -9,7 +9,7 @@ export default function HeroBanner() {
     <div className="hero-banner animate-fade-in-up">
       <div className="hero-banner-image-container">
         <img 
-          src="https://images.unsplash.com/photo-1549488344-c5c25eb662cb?w=1200&h=600&fit=crop" 
+          src="/images/hero.jpg"
           alt="Delicious home cooked meal" 
           className="hero-banner-image"
           loading="lazy"

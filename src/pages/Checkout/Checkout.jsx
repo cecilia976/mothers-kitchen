@@ -1,35 +1,16 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { useToast } from '../../context/ToastContext';
-import { addresses } from '../../data/mockData';
-import { MapPin, CreditCard, CheckCircle, Info, ShoppingCart, Rocket, Smartphone, Banknote } from 'lucide-react';
+import { MapPin, ShoppingCart, MessageCircle } from 'lucide-react';
 import './Checkout.css';
 
 export default function Checkout() {
   const cart = useCart();
-  const toast = useToast();
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [selectedAddress, setSelectedAddress] = useState(addresses[0]?.id);
-  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [customerName, setCustomerName] = useState('');
+  const [deliveryLocation, setDeliveryLocation] = useState('');
 
-  const handlePlaceOrder = () => {
-    setStep(3);
-    toast.success('Order placed successfully!');
-    setTimeout(() => cart.clearCart(), 500);
-  };
-
-  const getPaymentIcon = (id) => {
-    switch (id) {
-      case 'card': return <CreditCard size={24} />;
-      case 'cash': return <Banknote size={24} />;
-      case 'wallet': return <Smartphone size={24} />;
-      default: return <CreditCard size={24} />;
-    }
-  };
-
-  if (cart.items.length === 0 && step !== 3) {
+  if (cart.items.length === 0) {
     return (
       <div className="checkout-page animate-fade-in">
         <div className="empty-state">
@@ -42,69 +23,43 @@ export default function Checkout() {
     );
   }
 
+  const handleContinueToWhatsApp = () => {
+    if (!customerName.trim() || !deliveryLocation.trim()) return;
+
+    const lines = [
+      "Hello Mother's Kitchen,",
+      '',
+      `Customer name: ${customerName.trim()}`,
+      'Order:',
+      ...cart.items.map(item =>
+        `- ${item.quantity} x ${item.name} - $${item.price.toFixed(2)} each - $${(item.price * item.quantity).toFixed(2)}`
+      ),
+      '',
+      `Total: $${cart.subtotal.toFixed(2)}`,
+      `Delivery location: ${deliveryLocation.trim()}`,
+    ];
+
+    window.open(`https://wa.me/254794541304?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="checkout-page animate-fade-in">
       <h1 className="page-title">Checkout</h1>
 
-      {/* Steps */}
-      <div className="checkout-steps">
-        {['Delivery', 'Payment', 'Confirm'].map((label, i) => (
-          <div key={label} className={`checkout-step ${step >= i + 1 ? 'active' : ''} ${step > i + 1 ? 'done' : ''}`}>
-            <div className="checkout-step-circle">{step > i + 1 ? '✓' : i + 1}</div>
-            <span className="checkout-step-label">{label}</span>
-          </div>
-        ))}
-      </div>
-
-      {step === 1 && (
-        <div className="checkout-section animate-fade-in-up">
-          <h2 className="checkout-section-title"><MapPin size={24} className="text-primary" /> Delivery Address</h2>
-          <div className="address-list">
-            {addresses.map(addr => (
-              <label key={addr.id} className={`address-option ${selectedAddress === addr.id ? 'selected' : ''}`}>
-                <input
-                  type="radio"
-                  name="address"
-                  value={addr.id}
-                  checked={selectedAddress === addr.id}
-                  onChange={() => setSelectedAddress(addr.id)}
-                />
-                <div className="address-option-content">
-                  <div className="address-option-icon"><MapPin size={20} /></div>
-                  <div>
-                    <div className="address-option-label">{addr.label}</div>
-                    <div className="address-option-text">{addr.address}</div>
-                  </div>
-                </div>
-              </label>
-            ))}
-          </div>
-          <button className="btn-primary" onClick={() => setStep(2)} style={{ marginTop: 24, width: '100%' }}>Continue to Payment</button>
+      <div className="checkout-section animate-fade-in-up">
+        <h2 className="checkout-section-title"><MapPin size={24} className="text-primary" /> Delivery details</h2>
+        <div className="checkout-form">
+          <label>
+            <span>Your name</span>
+            <input value={customerName} onChange={e => setCustomerName(e.target.value)} placeholder="Enter your name" />
+          </label>
+          <label>
+            <span>Delivery location</span>
+            <input value={deliveryLocation} onChange={e => setDeliveryLocation(e.target.value)} placeholder="Enter your delivery location" />
+          </label>
         </div>
-      )}
 
-      {step === 2 && (
-        <div className="checkout-section animate-fade-in-up">
-          <h2 className="checkout-section-title"><CreditCard size={24} className="text-primary" /> Payment Method</h2>
-          <div className="payment-methods">
-            {[
-              { id: 'card', label: 'Credit Card', sub: '**** 4242' },
-              { id: 'cash', label: 'Cash on Delivery', sub: 'Pay when delivered' },
-              { id: 'wallet', label: 'Digital Wallet', sub: 'Apple Pay / Google Pay' },
-            ].map(pm => (
-              <label key={pm.id} className={`payment-option ${paymentMethod === pm.id ? 'selected' : ''}`}>
-                <input type="radio" name="payment" value={pm.id} checked={paymentMethod === pm.id} onChange={() => setPaymentMethod(pm.id)} />
-                <div className="payment-option-content">
-                  <span className="payment-option-icon">{getPaymentIcon(pm.id)}</span>
-                  <div>
-                    <div className="payment-option-label">{pm.label}</div>
-                    <div className="payment-option-sub">{pm.sub}</div>
-                  </div>
-                </div>
-              </label>
-            ))}
-          </div>
-
+        <div className="checkout-order-summary">
           <div className="checkout-order-summary">
             <h3>Order Summary</h3>
             {cart.items.map(item => (
@@ -115,29 +70,21 @@ export default function Checkout() {
             ))}
             <div className="checkout-total-row">
               <span>Total</span>
-              <span>${cart.total.toFixed(2)}</span>
+              <span>${cart.subtotal.toFixed(2)}</span>
             </div>
           </div>
-
-          <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-            <button className="btn-outline" onClick={() => setStep(1)} style={{ flex: 1 }}>Back</button>
-            <button className="btn-primary" onClick={handlePlaceOrder} style={{ flex: 2 }}>Place Order · ${cart.total.toFixed(2)}</button>
-          </div>
         </div>
-      )}
 
-      {step === 3 && (
-        <div className="checkout-confirmation animate-scale-in">
-          <div className="confirmation-icon"><CheckCircle size={64} color="var(--color-success)" /></div>
-          <h2>Order Confirmed!</h2>
-          <p>Your order has been placed successfully and is being prepared with love.</p>
-          <div className="confirmation-order-id">Order #MK-{Date.now().toString().slice(-6)}</div>
-          <div className="confirmation-eta">
-             <Rocket size={16} /> Estimated delivery: <strong>25-35 minutes</strong>
-          </div>
-          <button className="btn-primary" onClick={() => navigate('/')} style={{ marginTop: 24 }}>Back to Home</button>
-        </div>
-      )}
+        <button
+          className="btn-primary whatsapp-checkout"
+          onClick={handleContinueToWhatsApp}
+          disabled={!customerName.trim() || !deliveryLocation.trim()}
+        >
+          <MessageCircle size={20} />
+          Continue to WhatsApp
+        </button>
+        <p className="checkout-whatsapp-note">Your order will open in WhatsApp. Press Send in WhatsApp to complete it.</p>
+      </div>
     </div>
   );
 }

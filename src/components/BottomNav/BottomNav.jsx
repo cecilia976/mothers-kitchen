@@ -1,14 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { Home, Search, Heart, User, Menu } from 'lucide-react';
+import { Home, Menu, ShoppingBag } from 'lucide-react';
 import './BottomNav.css';
 
 const items = [
   { to: '/', label: 'Home', icon: Home },
   { to: '/menu', label: 'Menu', icon: Menu },
-  { to: '/search', label: 'Search', icon: Search },
-  { to: '/favorites', label: 'Favorites', icon: Heart },
-  { to: '/profile', label: 'Profile', icon: User },
+  { to: '/checkout', label: 'Cart', icon: ShoppingBag },
 ];
 
 export default function BottomNav() {
@@ -28,7 +26,7 @@ export default function BottomNav() {
             >
               <Icon size={22} className="bottom-nav-icon" />
               <span>{item.label}</span>
-              {item.label === 'Profile' && itemCount > 0 && (
+              {item.label === 'Cart' && itemCount > 0 && (
                 <span className="bottom-nav-badge">{itemCount}</span>
               )}
             </NavLink>

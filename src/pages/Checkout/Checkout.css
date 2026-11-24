@@ -65,6 +65,43 @@
   margin-bottom: var(--space-5);
 }
 
+.checkout-form {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.checkout-form label {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.checkout-form input {
+  height: 48px;
+  padding: 0 var(--space-4);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.checkout-form input:focus {
+  border-color: var(--color-primary);
+}
+
+.whatsapp-checkout {
+  width: 100%;
+  margin-top: var(--space-5);
+}
+
+.checkout-whatsapp-note {
+  margin-top: var(--space-3);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
 .address-list { display: flex; flex-direction: column; gap: var(--space-3); }
 .address-option {
   display: flex;
