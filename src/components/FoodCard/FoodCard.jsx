@@ -32,6 +32,10 @@ export default function FoodCard({ food, type = 'food' }) {
           alt={food.name}
           className="food-card-image"
           loading="lazy"
+          onError={(event) => {
+            event.currentTarget.onerror = null;
+            event.currentTarget.src = '/logo.png';
+          }}
         />
         <div className="food-card-badges">
           {food.isPopular && <span className="food-card-badge popular">Popular</span>}

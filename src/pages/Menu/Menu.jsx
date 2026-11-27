@@ -4,7 +4,7 @@ import { foodItems, drinkItems, foodCategories, drinkCategories } from '../../da
 import { Search, Filter, Coffee, Utensils } from 'lucide-react';
 import './Menu.css';
 
-export default function Menu() {
+export default function Menu({ embedded = false }) {
   const [activeTab, setActiveTab] = useState('food'); // 'food' or 'drinks'
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,10 +39,20 @@ export default function Menu() {
   }, [items, activeCategory, searchQuery, sortBy]);
 
   return (
-    <div className="menu-page animate-fade-in">
+    <section className={`menu-page ${embedded ? 'menu-page--embedded' : 'animate-fade-in'}`} id={embedded ? 'menu' : undefined}>
       <div className="menu-header">
-        <h1 className="page-title">Our Menu</h1>
-        <p className="page-subtitle">Handcrafted dishes and refreshing beverages</p>
+        {embedded ? (
+          <>
+            <span className="menu-eyebrow">Explore our menu</span>
+            <h2 className="menu-heading">Good food for every craving</h2>
+            <p className="page-subtitle">Handcrafted dishes and refreshing beverages</p>
+          </>
+        ) : (
+          <>
+            <h1 className="page-title">Our Menu</h1>
+            <p className="page-subtitle">Handcrafted dishes and refreshing beverages</p>
+          </>
+        )}
       </div>
 
       <div className="menu-tabs">
@@ -112,6 +122,6 @@ export default function Menu() {
           <p>Try adjusting your search or category filter.</p>
         </div>
       )}
-    </div>
+    </section>
   );
 }

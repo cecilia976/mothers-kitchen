@@ -8,7 +8,6 @@ import ToastContainer from './components/Toast/Toast';
 import Home from './pages/Home/Home';
 import Menu from './pages/Menu/Menu';
 import ItemDetail from './pages/ItemDetail/ItemDetail';
-import Checkout from './pages/Checkout/Checkout';
 import Search from './pages/Search/Search';
 import { Navigate } from 'react-router-dom';
 
@@ -25,14 +24,14 @@ function App() {
     <div className="app-container">
       <div className="main-layout">
         <Header onCartToggle={() => setCartOpen(true)} />
-        <main className="content-area">
+        <main className={`content-area ${location.pathname === '/' ? 'home-content-area' : ''}`}>
           <div className="container-fluid">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/food/:id" element={<ItemDetail type="food" />} />
               <Route path="/drink/:id" element={<ItemDetail type="drink" />} />
-              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/checkout" element={<Navigate to="/" replace />} />
               <Route path="/search" element={<Search />} />
               <Route path="/login" element={<Navigate to="/" replace />} />
               <Route path="/register" element={<Navigate to="/" replace />} />
@@ -42,7 +41,7 @@ function App() {
             </Routes>
           </div>
         </main>
-        <BottomNav />
+        <BottomNav onCartToggle={() => setCartOpen(true)} />
       </div>
       <CartPanel isOpen={isCartOpen} onClose={() => setCartOpen(false)} />
 
@@ -81,6 +80,20 @@ function App() {
             padding: var(--space-4);
             padding-bottom: 100px;
           }
+        }
+
+        .content-area.home-content-area {
+          padding-top: 0;
+          padding-bottom: 0;
+          display: flex;
+          flex-direction: column;
+          overflow-x: clip;
+        }
+
+        .home-content-area > .container-fluid {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
         }
       `}</style>
     </div>

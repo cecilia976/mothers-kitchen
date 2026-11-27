@@ -23,7 +23,7 @@
   /* Text */
   --color-text: #1A1A1A;
   --color-text-secondary: #5C5C5C;
-  --color-text-muted: #9CA3AF;
+  --color-text-muted: #6B7280;
   --color-text-inverse: #FFFFFF;
 
   /* Borders */
@@ -129,6 +129,10 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+section[id], footer[id] {
+  scroll-margin-top: calc(var(--header-height) + 20px);
 }
 
 body {
@@ -341,7 +345,7 @@ ul, ol { list-style: none; }
 /* --- Grid Layouts --- */
 .food-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
   gap: var(--space-5);
 }
 
@@ -461,7 +465,19 @@ ul, ol { list-style: none; }
 /* --- Responsive --- */
 @media (max-width: 480px) {
   .food-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-3);
+  }
+}
+
+@media (max-width: 360px) {
+  .food-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-height: 112px;
   }
 }

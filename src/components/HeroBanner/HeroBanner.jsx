@@ -6,13 +6,13 @@ export default function HeroBanner() {
   const navigate = useNavigate();
 
   return (
-    <div className="hero-banner animate-fade-in-up">
+    <section className="hero-banner" id="home" aria-label="Mother's Kitchen home">
       <div className="hero-banner-image-container">
         <img 
           src="/images/hero.jpg"
-          alt="Delicious home cooked meal" 
+          alt="A selection of freshly prepared restaurant dishes"
           className="hero-banner-image"
-          loading="lazy"
+          loading="eager"
         />
         <div className="hero-banner-overlay" />
       </div>
@@ -30,11 +30,21 @@ export default function HeroBanner() {
           <button className="btn-primary" onClick={() => navigate('/menu')}>
             Order Now <ArrowRight size={18} />
           </button>
-          <button className="btn-outline hero-btn-secondary" onClick={() => navigate('/about')}>
+          <button
+            className="btn-outline hero-btn-secondary"
+            onClick={() => {
+              if (window.location.pathname !== '/') {
+                navigate('/');
+                window.setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }), 50);
+              } else {
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
             Our Story
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

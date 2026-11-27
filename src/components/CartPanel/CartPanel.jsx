@@ -1,19 +1,62 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import {
   ShoppingBag, X, Plus, Minus, Trash2
 } from 'lucide-react';
+import { restaurant } from '../../config/restaurant';
 import './CartPanel.css';
 
 export default function CartPanel({ isOpen, onClose }) {
   const cart = useCart();
   const toast = useToast();
-  const navigate = useNavigate();
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+  const [deliveryLocation, setDeliveryLocation] = useState('');
 
-  const handleCheckout = () => {
-    onClose();
-    navigate('/checkout');
+  const handleWhatsAppOrder = () => {
+    if (cart.items.length === 0) {
+      toast.info('Add at least one item before ordering');
+      return;
+    }
+    if (!customerName.trim() || !deliveryLocation.trim()) {
+      toast.info('Please enter your name and delivery location');
+      return;
+    }
+
+    const itemLines = cart.items.flatMap((item, index) => [
+      `${index + 1}. ${item.name}`,
+      `Quantity: ${item.quantity}`,
+      `Unit Price: $${item.price.toFixed(2)}`,
+      `Subtotal: $${(item.price * item.quantity).toFixed(2)}`,
+    ]);
+    const message = [
+      "MOTHER'S KITCHEN — NEW ORDER",
+      '',
+      'Hello Mother\'s Kitchen!',
+      '',
+      'I would like to place an order.',
+      '',
+      'CUSTOMER DETAILS',
+      `Name: ${customerName.trim()}`,
+      `Delivery Location: ${deliveryLocation.trim()}`,
+      '',
+      'ORDER DETAILS',
+      '',
+      ...itemLines,
+      '',
+      '---',
+      '',
+      `TOTAL: $${cart.subtotal.toFixed(2)}`,
+      '',
+      'Please confirm my order.',
+      '',
+      'Thank you!',
+    ].join('\n');
+
+    const url = `https://wa.me/${restaurant.whatsappInternational}?text=${encodeURIComponent(message)}`;
+    const opened = window.open(url, '_blank', 'noopener,noreferrer');
+    if (!opened) toast.info('Please allow pop-ups to continue on WhatsApp');
   };
 
   return (
@@ -47,10 +90,20 @@ export default function CartPanel({ isOpen, onClose }) {
             <div className="cart-panel-items">
               {cart.items.map(item => (
                 <div key={item.id} className="cart-item">
-                  <img src={item.image} alt={item.name} className="cart-item-image" loading="lazy" />
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="cart-item-image"
+                    loading="lazy"
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = '/logo.png';
+                    }}
+                  />
                   <div className="cart-item-info">
                     <div className="cart-item-name">{item.name}</div>
-                    <div className="cart-item-price">${(item.price * item.quantity).toFixed(2)}</div>
+                    <div className="cart-item-price">${item.price.toFixed(2)} each</div>
+                    <div className="cart-item-subtotal">${(item.price * item.quantity).toFixed(2)} subtotal</div>
                     <div className="cart-item-controls">
                       <button
                         className="cart-item-qty-btn"
@@ -92,16 +145,44 @@ export default function CartPanel({ isOpen, onClose }) {
               </div>
             </div>
 
-            {/* Checkout */}
             <div className="cart-checkout">
-              <button
-                className="cart-checkout-btn"
-                onClick={handleCheckout}
-                disabled={cart.items.length === 0}
-                id="checkout-btn"
-              >
-                Checkout · ${cart.subtotal.toFixed(2)}
-              </button>
+              {!detailsOpen ? (
+                <button
+                  className="cart-checkout-btn"
+                  onClick={() => setDetailsOpen(true)}
+                  disabled={cart.items.length === 0}
+                  id="checkout-btn"
+                >
+                  Add delivery details · ${cart.subtotal.toFixed(2)}
+                </button>
+              ) : (
+                <div className="cart-details">
+                  <label>
+                    <span>Your name</span>
+                    <input
+                      value={customerName}
+                      onChange={event => setCustomerName(event.target.value)}
+                      placeholder="Enter your name"
+                    />
+                  </label>
+                  <label>
+                    <span>Delivery location</span>
+                    <input
+                      value={deliveryLocation}
+                      onChange={event => setDeliveryLocation(event.target.value)}
+                      placeholder="Enter your delivery location"
+                    />
+                  </label>
+                  <button
+                    className="cart-checkout-btn"
+                    onClick={handleWhatsAppOrder}
+                    disabled={!customerName.trim() || !deliveryLocation.trim()}
+                  >
+                    Continue to WhatsApp · ${cart.subtotal.toFixed(2)}
+                  </button>
+                  <p className="cart-whatsapp-note">Press Send in WhatsApp to submit your order.</p>
+                </div>
+              )}
             </div>
           </>
         )}

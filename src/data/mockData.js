@@ -290,21 +290,21 @@ export const foodItems = [
   },
   {
     id: 14,
-    name: 'Eggs Benedict',
-    description: 'Poached eggs on toasted English muffins with smoked ham and hollandaise sauce.',
-    image: 'https://images.unsplash.com/photo-1608039829572-9b0e4b10e401?w=500&h=400&fit=crop',
-    price: 12.49,
+    name: 'Classic French Toast',
+    description: 'Thick-cut brioche French toast topped with fresh banana, blueberries, and maple syrup.',
+    image: '/images/french-toast.jpg',
+    price: 10.49,
     originalPrice: null,
-    rating: 4.5,
+    rating: 4.7,
     reviewCount: 112,
     category: 'breakfast',
     isPopular: false,
     isNew: false,
     isAvailable: true,
     calories: 520,
-    prepTime: '12-18 min',
-    ingredients: ['Eggs', 'English muffins', 'Smoked ham', 'Hollandaise sauce', 'Chives'],
-    nutrition: { protein: '28g', carbs: '32g', fat: '28g', fiber: '2g' },
+    prepTime: '10-15 min',
+    ingredients: ['Brioche bread', 'Eggs', 'Milk', 'Cinnamon', 'Banana', 'Blueberries', 'Maple syrup'],
+    nutrition: { protein: '12g', carbs: '56g', fat: '18g', fiber: '4g' },
   },
   {
     id: 15,
@@ -475,10 +475,4 @@ export const customerReviews = [
   { id: 2, name: 'James Chen', rating: 5, comment: 'I order from here at least three times a week. The quality is consistently outstanding. It truly feels like a home-cooked meal every single time.', date: '2024-12-17', avatar: null },
   { id: 3, name: 'Amara Williams', rating: 4, comment: 'The African cuisine selection is authentic and delicious. Love the Suya Beef Skewers and the Butter Chicken is incredible too. Fast delivery every time!', date: '2024-12-15', avatar: null },
   { id: 4, name: 'David Thompson', rating: 5, comment: 'Found my new favorite restaurant. The burgers are gourmet quality and the chocolate lava cake is worth every penny. Highly recommended!', date: '2024-12-12', avatar: null },
-];
-
-export const todaysSpecials = [
-  { foodId: 1, discount: 20, validUntil: 'Today only' },
-  { foodId: 9, discount: 15, validUntil: 'Today only' },
-  { foodId: 4, discount: 10, validUntil: 'This weekend' },
 ];
