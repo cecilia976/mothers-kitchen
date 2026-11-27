@@ -1,122 +1,91 @@
-import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import HeroBanner from '../../components/HeroBanner/HeroBanner';
-import CategorySlider from '../../components/CategorySlider/CategorySlider';
-import RestaurantCard from '../../components/RestaurantCard/RestaurantCard';
-import FoodCard from '../../components/FoodCard/FoodCard';
-import { restaurants, foodItems } from '../../data/mockData';
-import { HiOutlineStar, HiOutlineBuildingStorefront, HiOutlineTruck, HiOutlineClock } from 'react-icons/hi2';
+import Menu from '../Menu/Menu';
+import { customerReviews } from '../../data/mockData';
+import { Star, ArrowRight, MessageCircle } from 'lucide-react';
+import { restaurant } from '../../config/restaurant';
 import './Home.css';
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  const filteredFoods = useMemo(() => {
-    if (activeCategory === 'all') return foodItems;
-    return foodItems.filter(f => f.category === activeCategory);
-  }, [activeCategory]);
-
-  const popularFoods = useMemo(() => foodItems.filter(f => f.isPopular), []);
-  const featuredRestaurants = useMemo(() => restaurants.filter(r => r.featured), []);
+  const navigate = useNavigate();
 
   return (
     <div className="home-page">
       <HeroBanner />
+      <Menu embedded />
 
-      {/* Quick Stats */}
-      <div className="stats-bar">
-        <div className="stat-card">
-          <div className="stat-icon orange"><HiOutlineBuildingStorefront /></div>
-          <div>
-            <div className="stat-value">200+</div>
-            <div className="stat-label">Restaurants</div>
-          </div>
+      <section className="about-section" id="about">
+        <div className="about-copy">
+          <span className="about-eyebrow">About Mother's Kitchen</span>
+          <h2>Good food,<br /><em>great vibes.</em></h2>
+          <p>
+            Mother's Kitchen brings comforting meals and refreshing drinks together
+            in one welcoming menu. Explore familiar favourites, hearty main dishes,
+            and something sweet for every appetite.
+          </p>
+          <button className="about-menu-button" onClick={() => navigate('/menu')}>
+            Explore our menu <ArrowRight size={18} />
+          </button>
         </div>
-        <div className="stat-card">
-          <div className="stat-icon green"><HiOutlineTruck /></div>
-          <div>
-            <div className="stat-value">Free</div>
-            <div className="stat-label">Delivery $25+</div>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon blue"><HiOutlineClock /></div>
-          <div>
-            <div className="stat-value">25 min</div>
-            <div className="stat-label">Avg Delivery</div>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon purple"><HiOutlineStar /></div>
-          <div>
-            <div className="stat-value">4.8★</div>
-            <div className="stat-label">User Rating</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Categories */}
-      <CategorySlider activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
-
-      {/* Popular Restaurants */}
-      <section className="restaurants-section" aria-label="Popular restaurants">
-        <div className="section-header">
-          <h2 className="section-title">Popular restaurants</h2>
-          <Link to="/restaurants" className="section-view-all">View all</Link>
-        </div>
-        <div className="restaurant-grid">
-          {featuredRestaurants.map(r => (
-            <RestaurantCard key={r.id} restaurant={r} />
-          ))}
+        <div className="about-image-wrap">
+          <img src="/images/salmon.jpg" alt="Grilled salmon with fresh vegetables" loading="lazy" />
         </div>
       </section>
 
-      {/* Food Items */}
-      <section className="food-section" aria-label="Food items">
-        <div className="section-header">
-          <h2 className="section-title">
-            {activeCategory === 'all' ? 'All dishes' : `${activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1)} dishes`}
-          </h2>
+      {/* Reviews Section */}
+      <section className="reviews-section" id="reviews">
+        <div className="reviews-heading">
+          <span>Customer reviews</span>
+          <h2>What Our Customers Say</h2>
+          <p>Real experiences from our guests.</p>
         </div>
-        <div className="food-grid">
-          {filteredFoods.map(food => (
-            <FoodCard key={food.id} food={food} />
-          ))}
-        </div>
-        {filteredFoods.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--color-text-muted)' }}>
-            <div style={{ fontSize: '3rem', marginBottom: '12px' }}>🍽️</div>
-            <p>No dishes found in this category yet.</p>
-          </div>
-        )}
-      </section>
-
-      {/* Top Picks */}
-      <section className="top-picks-section" aria-label="Top picks for you">
-        <div className="section-header">
-          <h2 className="section-title">Top picks for you</h2>
-          <Link to="/restaurants" className="section-view-all">View all</Link>
-        </div>
-        <div className="top-picks-scroll">
-          {popularFoods.map(food => (
-            <div key={food.id} className="top-pick-card">
-              <div className="top-pick-image-wrap">
-                <img src={food.image} alt={food.name} className="top-pick-image" loading="lazy" />
-                {food.isPopular && <span className="top-pick-badge">🔥 Popular</span>}
+        <div className="reviews-grid">
+          {customerReviews.map(review => (
+            <div key={review.id} className="review-card">
+              <div className="review-stars">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={15} fill={i < review.rating ? 'var(--color-accent)' : 'none'} color="var(--color-accent)" />
+                ))}
               </div>
-              <div className="top-pick-body">
-                <div className="top-pick-name">{food.name}</div>
-                <div className="top-pick-meta">
-                  <span className="top-pick-price">${food.price.toFixed(2)}</span>
-                  <span className="top-pick-rating">
-                    <HiOutlineStar /> {food.rating}
-                  </span>
+              <p className="review-comment">“{review.comment}”</p>
+              <div className="review-author">
+                <div className="review-avatar">{review.name[0]}</div>
+                <div>
+                  <div className="review-name">{review.name}</div>
                 </div>
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="footer-section" id="contact">
+        <svg className="footer-wave" viewBox="0 0 1440 96" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0H1440V34C1200 75 1010 84 720 58C430 32 220 80 0 50Z" />
+        </svg>
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <img src="/logo.png" alt="Mother's Kitchen" className="footer-logo" />
+            <h3 className="footer-title">{restaurant.name}</h3>
+            <p className="footer-tagline">{restaurant.tagline}</p>
+          </div>
+          <div className="footer-contact">
+            <p>WhatsApp: {restaurant.whatsappDisplay}</p>
+            <a
+              className="footer-whatsapp"
+              href={`https://wa.me/${restaurant.whatsappInternational}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageCircle size={18} /> Continue on WhatsApp
+            </a>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} Mother's Kitchen. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }

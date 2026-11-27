@@ -1,46 +1,48 @@
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Utensils } from 'lucide-react';
 import './HeroBanner.css';
 
 export default function HeroBanner() {
+  const navigate = useNavigate();
+
   return (
-    <section className="hero-banner" aria-label="Promotional banner">
-      <div className="hero-banner-bg">
-        <img
-          src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&h=400&fit=crop"
-          alt=""
-          aria-hidden="true"
+    <section className="hero-banner" id="home" aria-label="Mother's Kitchen home">
+      <div className="hero-banner-image-container">
+        <img 
+          src="/images/hero.jpg"
+          alt="A selection of freshly prepared restaurant dishes"
+          className="hero-banner-image"
           loading="eager"
         />
+        <div className="hero-banner-overlay" />
       </div>
-      <div className="hero-banner-overlay" />
-
+      
       <div className="hero-banner-content">
-        <div className="hero-banner-left">
-          <div className="hero-banner-badge">🔥 Hot Deal</div>
-          <h1 className="hero-banner-title">
-            <span>50% OFF</span> on your<br />first order 🎉
-          </h1>
-          <p className="hero-banner-subtitle">
-            Discover home-cooked meals crafted with love. Fresh ingredients, bold flavors, delivered to your doorstep.
-          </p>
-          <button className="hero-banner-cta" id="hero-order-now">
-            Order Now →
+        <span className="hero-banner-chip"><Utensils size={14} /> Mother's Kitchen</span>
+        <h1 className="hero-banner-title">
+          Every Meal<br />
+          Feels Like <span className="text-highlight">Home.</span>
+        </h1>
+        <p className="hero-banner-subtitle">
+          Experience authentic, comforting recipes crafted with love. Delivered hot and fresh to your door in under 45 minutes.
+        </p>
+        <div className="hero-banner-actions">
+          <button className="btn-primary" onClick={() => navigate('/menu')}>
+            Order Now <ArrowRight size={18} />
           </button>
-        </div>
-
-        <div className="hero-banner-right">
-          <img
-            src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop"
-            alt="Delicious pizza"
-            className="hero-banner-image"
-            loading="eager"
-          />
-          <div className="hero-banner-float-card">
-            <div className="hero-banner-float-icon">🚀</div>
-            <div>
-              <div className="hero-banner-float-text">Free Delivery</div>
-              <div className="hero-banner-float-sub">Orders above $25</div>
-            </div>
-          </div>
+          <button
+            className="btn-outline hero-btn-secondary"
+            onClick={() => {
+              if (window.location.pathname !== '/') {
+                navigate('/');
+                window.setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }), 50);
+              } else {
+                document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
+            Our Story
+          </button>
         </div>
       </div>
     </section>
